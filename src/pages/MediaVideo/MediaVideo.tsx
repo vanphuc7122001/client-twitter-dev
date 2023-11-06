@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 import { useState } from 'react'
 import http from 'src/utils/http'
 
@@ -39,6 +40,17 @@ export default function MediaVideo() {
           Submit
         </button>
       </form>
+      {/* Serve videos route apply technique stream */}
+      <video width={500} controls>
+        <source src='http://localhost:4000/static/videos-stream/25b3a3801181a5be2fec2e900.mp4' />
+        Your browser does not support the video tag.
+      </video>
+
+      {/* Serve videos with express */}
+      {/* <video width={500} controls>
+        <source src='http://localhost:4000/static/videos/25b3a3801181a5be2fec2e900.mp4' />
+        Your browser does not support the video tag.
+      </video> */}
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import http from 'src/utils/http'
 
 export default function Media() {
@@ -36,6 +37,13 @@ export default function Media() {
           Submit
         </button>
       </form>
+
+      <Link
+        to='/home'
+        className='m-4 inline-block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2  focus:outline-none '
+      >
+        Home
+      </Link>
     </div>
   )
 }

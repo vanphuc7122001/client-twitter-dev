@@ -5,20 +5,32 @@ import Register from './pages/Register'
 import Media from './pages/Media'
 import MediaMultiple from './pages/MediaMultiple/MediaMultiple'
 import MediaVideo from './pages/MediaVideo'
+import Home from './pages/Home'
+import MainLayout from './layouts/MainLayout'
 
 export default function useRoutesElement() {
   const routesElement = useRoutes([
     {
       path: '/',
-      element: <Media />
-    },
-    {
-      path: '/media-images',
-      element: <MediaMultiple />
-    },
-    {
-      path: '/media-videos',
-      element: <MediaVideo />
+      element: <MainLayout />,
+      children: [
+        {
+          path: 'home',
+          element: <Home />
+        },
+        {
+          path: 'media',
+          element: <Media />
+        },
+        {
+          path: 'media-images',
+          element: <MediaMultiple />
+        },
+        {
+          path: 'media-videos',
+          element: <MediaVideo />
+        }
+      ]
     },
     {
       path: '/login',
