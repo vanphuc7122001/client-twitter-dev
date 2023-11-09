@@ -29,7 +29,7 @@ class Http {
         return config.data
       },
       async (err) => {
-        if (err.response.status === 401 && err.response.data.message === 'Jwt expired') {
+        if (err.message !== 'canceled' && err.response.status === 401 && err.response.data.message === 'Jwt expired') {
           this.refreshTokenRequest = this.refreshTokenRequest
             ? this.refreshTokenRequest
             : await refreshToken()

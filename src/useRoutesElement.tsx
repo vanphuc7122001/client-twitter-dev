@@ -7,6 +7,7 @@ import MediaMultiple from './pages/MediaMultiple/MediaMultiple'
 import MediaVideo from './pages/MediaVideo'
 import Home from './pages/Home'
 import MainLayout from './layouts/MainLayout'
+import VerifyEmail from './pages/VerifyEmail'
 
 export default function useRoutesElement() {
   const routesElement = useRoutes([
@@ -47,6 +48,10 @@ export default function useRoutesElement() {
           <Register />
         </RegisterLayout>
       )
+    },
+    {
+      path: '/verify-email',
+      element: <VerifyEmail />
     }
   ])
   return routesElement
