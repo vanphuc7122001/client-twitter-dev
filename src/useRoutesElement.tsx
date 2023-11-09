@@ -8,6 +8,8 @@ import MediaVideo from './pages/MediaVideo'
 import Home from './pages/Home'
 import MainLayout from './layouts/MainLayout'
 import VerifyEmail from './pages/VerifyEmail'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword/ResetPassword'
 
 export default function useRoutesElement() {
   const routesElement = useRoutes([
@@ -30,6 +32,14 @@ export default function useRoutesElement() {
         {
           path: 'media-videos',
           element: <MediaVideo />
+        },
+        {
+          path: 'forgot-password',
+          element: <ForgotPassword />
+        },
+        {
+          path: 'reset-password',
+          element: <ResetPassword />
         }
       ]
     },
