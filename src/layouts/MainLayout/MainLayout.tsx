@@ -1,6 +1,6 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import http from 'src/utils/http'
-import { createContext, useMemo } from 'react'
+import { createContext, useEffect, useMemo } from 'react'
 
 const isActiveLink = ({ isActive }: any) => {
   return {
@@ -18,7 +18,12 @@ export const AuthenticatedContext = createContext<AuthenType>({
 
 export default function MainLayout() {
   const isAuthenticated = localStorage.getItem('access_token')
-
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('login')
+    }
+  }, [isAuthenticated, navigate])
   const valueContext = useMemo(() => {
     return { isAuthenticated }
   }, [isAuthenticated])
@@ -115,6 +120,15 @@ export default function MainLayout() {
                   className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
                 >
                   Forgot password
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  style={isActiveLink}
+                  to='/chat'
+                  className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent'
+                >
+                  Chat
                 </NavLink>
               </li>
             </ul>

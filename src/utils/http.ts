@@ -29,31 +29,32 @@ class Http {
         return config.data
       },
       async (err) => {
-        if (err.message !== 'canceled' && err.response.status === 401 && err.response.data.message === 'Jwt expired') {
-          this.refreshTokenRequest = this.refreshTokenRequest
-            ? this.refreshTokenRequest
-            : await refreshToken()
-                .then(async ({ access_token, refresh_token }) => {
-                  console.log('call respone', err.response.config)
-                  localStorage.setItem('refresh_token', refresh_token)
-                  localStorage.setItem('access_token', access_token)
-                  err.response.config.headers.Authorization = 'Bearer ' + access_token
-                  if (err.response.config.headers['Content-Type'] === 'multipart/form-data') {
-                    err.response.config.headers['Content-Type'] = 'multipart/form-data'
-                  }
-                  if (err.response.config.data.includes('refresh_token')) {
-                    err.response.config.data = {
-                      refresh_token
+        if (err.response) {
+          if (err.response.status === 401 && err.response.data.message === 'Jwt expired') {
+            this.refreshTokenRequest = this.refreshTokenRequest
+              ? this.refreshTokenRequest
+              : await refreshToken()
+                  .then(async ({ access_token, refresh_token }) => {
+                    localStorage.setItem('refresh_token', refresh_token)
+                    localStorage.setItem('access_token', access_token)
+                    err.response.config.headers.Authorization = 'Bearer ' + access_token
+                    if (err.response.config.headers['Content-Type'] === 'multipart/form-data') {
+                      err.response.config.headers['Content-Type'] = 'multipart/form-data'
                     }
-                  }
-                  return this.instance(err.response.config) // goi lai api vua moi error jwt expired
-                })
-                .catch((refreshTokenErr) => {
-                  throw refreshTokenErr
-                })
-                .finally(() => {
-                  this.refreshTokenRequest = null
-                })
+                    if (err.response.config.data.includes('refresh_token')) {
+                      err.response.config.data = {
+                        refresh_token
+                      }
+                    }
+                    return this.instance(err.response.config) // goi lai api vua moi error jwt expired
+                  })
+                  .catch((refreshTokenErr) => {
+                    throw refreshTokenErr
+                  })
+                  .finally(() => {
+                    this.refreshTokenRequest = null
+                  })
+          }
         }
 
         return Promise.reject(err)

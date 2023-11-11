@@ -14,3 +14,9 @@ export const refreshToken = async () => {
 
   return { ...result }
 }
+
+export const getUserIdFromAccessToken = (access_token: string): string => {
+  const payload = access_token.split('.')[1]
+  const decode = atob(payload)
+  return JSON.parse(decode).user_id
+}

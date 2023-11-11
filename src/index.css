@@ -5,3 +5,7 @@
 body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+
+::-webkit-scrollbar {
+  width: 0;
+}

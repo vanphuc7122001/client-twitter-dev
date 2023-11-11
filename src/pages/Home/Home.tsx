@@ -13,7 +13,7 @@ export default function Home() {
       localStorage.setItem('refresh_token', refresh_token as string)
       navigate('/home')
     }
-  }, [newUser, access_token, refresh_token])
+  }, [newUser, access_token, refresh_token, navigate])
 
   return (
     <div>

@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react'
 import { FcGoogle } from 'react-icons/fc'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import http from 'src/utils/http'
 const getGoogleAuthUrl = () => {
   const { VITE_GOOGLE_CLIENT_ID, VITE_REDIRECT_URL } = import.meta.env
   const url = `https://accounts.google.com/o/oauth2/v2/auth`
@@ -20,22 +23,67 @@ const getGoogleAuthUrl = () => {
 const googleOauthUrl = getGoogleAuthUrl()
 
 export default function Login() {
+  const navigate = useNavigate()
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  useEffect(() => {
+    const access_token = localStorage.getItem('access_token')
+    if (access_token) {
+      navigate('/home')
+    }
+  }, [])
+  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    http
+      .post<
+        { email: string; password: string },
+        {
+          message: string
+          result: {
+            access_token: string
+            refresh_token: string
+          }
+        }
+      >('/users/login', { email, password })
+      .then((data) => {
+        localStorage.setItem('access_token', data.result.access_token)
+        localStorage.setItem('refresh_token', data.result.refresh_token)
+        navigate('/home')
+        toast.success('Login Successfully')
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
   return (
     <div className='w-[400px] min-h-[250px] bg-white mr-[240px] p-8 rounded'>
       <p className='text-xl'>Đăng nhập</p>
-      <form className='mt-7 text-colorText'>
+      <form className='mt-7 text-colorText' onSubmit={handleLogin}>
         <div>
-          <input className='border outline-none w-full p-3 h-[40px] text-[14px]' type='text' placeholder='Nhập tên' />
+          <input
+            className='border outline-none w-full p-3 h-[40px] text-[14px]'
+            type='email'
+            placeholder='Nhập email'
+            onChange={(event) => setEmail(event.target.value)}
+          />
           <p className='mt-1 text-[12px] min-h-[13px] text-red-600'></p>
         </div>
         <div className='mt-3'>
-          <input className='border outline-none w-full p-3 h-[40px] text-[14px]' type='text' placeholder='Nhập email' />
+          <input
+            className='border outline-none w-full p-3 h-[40px] text-[14px]'
+            type='text'
+            placeholder='Nhập password'
+            onChange={(event) => setPassword(event.target.value)}
+          />
           <p className='mt-1 text-[12px] min-h-[13px] text-red-600'></p>
         </div>
 
-        <div className='mt-[30px] flex items-center justify-center border rounded p-2 text-[14px] bg-orange text-white font-semibold'>
-          <Link to={googleOauthUrl}>Đăng nhập</Link>
-        </div>
+        <button
+          type='submit'
+          className='mt-[30px] w-full flex items-center justify-center border rounded p-2 text-[14px] bg-orange text-white font-semibold'
+        >
+          Đăng nhập
+        </button>
       </form>
       <div className='my-[30px] flex items-center justify-center gap-2 mx-[1px]'>
         <span className='w-[100%] h-[1px] bg-[#ccc]'></span>

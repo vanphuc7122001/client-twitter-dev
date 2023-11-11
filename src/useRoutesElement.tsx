@@ -10,6 +10,7 @@ import MainLayout from './layouts/MainLayout'
 import VerifyEmail from './pages/VerifyEmail'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
+import Chat from './pages/Chat'
 
 export default function useRoutesElement() {
   const routesElement = useRoutes([
@@ -40,6 +41,10 @@ export default function useRoutesElement() {
         {
           path: 'reset-password',
           element: <ResetPassword />
+        },
+        {
+          path: 'chat',
+          element: <Chat />
         }
       ]
     },
